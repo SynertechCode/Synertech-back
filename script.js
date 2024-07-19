@@ -1,19 +1,20 @@
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 // Використання CORS
 app.use(cors({
-  origin: 'http://localhost:4200', // Додано ваш домен
+  origin: 'http://localhost:4200',
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
 // Підключення до MongoDB
-mongoose.connect('mongodb+srv://Alex_Gavrish:IKc0xvjnoOshP9Vp@cluster0.sdvypro.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', {
+mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 })
@@ -50,7 +51,6 @@ app.post('/syner/users', async (req, res) => {
     res.status(400).json({ message: err.message });
   }
 });
-
 
 // Middleware для обслуговування статичних файлів
 app.use(express.static('public'));
