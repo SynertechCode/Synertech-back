@@ -30,7 +30,7 @@ const userSchema = new mongoose.Schema({
 const User = mongoose.model('User', userSchema);
 
 // Маршрут для реєстрації користувачів
-app.post('/syner/users', async (req, res) => {
+app.post('/api/register', async (req, res) => {
     const { name, email, select, project } = req.body;
     const newUser = new User({ name, email, select, project });
 
