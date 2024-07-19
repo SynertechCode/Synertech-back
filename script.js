@@ -8,16 +8,15 @@ const port = process.env.PORT || 3000;
 
 // Використання CORS
 app.use(cors({
-  origin: 'https://synertech-21d84.web.app/',
+  origin: 'https://synertech-21d84.web.app',
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
 // Підключення до MongoDB
-mongoose.connect(process.env.MONGODB_URI, {
-})
-.then(() => console.log('MongoDB підключено'))
-.catch(err => console.error('Помилка підключення до MongoDB', err));
+mongoose.connect(process.env.MONGODB_URI)
+  .then(() => console.log('MongoDB підключено'))
+  .catch(err => console.error('Помилка підключення до MongoDB', err));
 
 // Створення моделі користувача
 const User = mongoose.model('User', {
