@@ -17,7 +17,7 @@ app.use(cors({
 app.use(bodyParser.json());
 
 // Підключення до MongoDB
-mongoose.connect('mongodb+srv://Alex_Gavrish:IKc0xvjnoOshP9Vp@cluster0.sdvypro.mongodb.net/your-database-name?retryWrites=true&w=majority')
+mongoose.connect('mongodb+srv://Alex_Gavrish:IKc0xvjnoOshP9Vp@cluster0.sdvypro.mongodb.net/synertech?retryWrites=true&w=majority')
 
   .then(() => console.log('MongoDB connected'))
   .catch(err => console.error('MongoDB connection error:', err));
@@ -33,7 +33,7 @@ const userSchema = new mongoose.Schema({
 const User = mongoose.model('User', userSchema);
 
 // Маршрут для реєстрації користувачів
-app.post('/api/register', async (req, res) => {
+app.post('', async (req, res) => {
   const { name, email, select, project } = req.body;
 
   const newUser = new User({ name, email, select, project });
