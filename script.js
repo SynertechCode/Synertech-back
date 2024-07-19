@@ -1,58 +1,47 @@
-require('dotenv').config();
 const express = require('express');
-const mongoose = require('mongoose');
 const cors = require('cors');
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
 
 const app = express();
 const port = process.env.PORT || 3000;
 
-// Використання CORS
-app.use(cors({
-  origin: 'https://synertech-21d84.web.app',
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
-}));
+// Enable CORS for all routes
+app.use(cors());
+
+// Middleware для парсингу JSON
+app.use(bodyParser.json());
 
 // Підключення до MongoDB
-mongoose.connect(process.env.MONGODB_URI)
-  .then(() => console.log('MongoDB підключено'))
-  .catch(err => console.error('Помилка підключення до MongoDB', err));
+mongoose.connect('mongodb+srv://Alex_Gavrish:IKc0xvjnoOshP9Vp@cluster0.sdvypro.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+}).then(() => console.log('MongoDB connected'))
+  .catch(err => console.log(err));
 
-// Створення моделі користувача
-const User = mongoose.model('User', {
-  name: String,
-  email: String,
-  select: String,
-  project: String
+// Схема та модель для користувачів
+const userSchema = new mongoose.Schema({
+    name: String,
+    email: String,
+    select: String,
+    project: String
 });
 
-// Middleware для обробки JSON і форм
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+const User = mongoose.model('User', userSchema);
 
-// Роут для збереження користувача в базу даних
+// Маршрут для реєстрації користувачів
 app.post('/syner/users', async (req, res) => {
-  const { name, email, select, project } = req.body;
-
-  console.log('Отримано запит на створення користувача з даними:', req.body);
-
-  try {
+    const { name, email, select, project } = req.body;
     const newUser = new User({ name, email, select, project });
-    await newUser.save();
 
-    console.log(`Збережено нового користувача: ${name}, ${email}, ${select}, ${project}`);
-
-    res.status(201).json({ message: 'Користувач збережений в базу даних' });
-  } catch (err) {
-    console.error('Помилка збереження користувача:', err);
-    res.status(400).json({ message: err.message });
-  }
+    try {
+        await newUser.save();
+        res.status(201).send('User registered successfully');
+    } catch (err) {
+        res.status(400).send('Error registering user');
+    }
 });
 
-// Middleware для обслуговування статичних файлів
-app.use(express.static('public'));
-
-// Прослуховування сервера
 app.listen(port, () => {
-  console.log(`Сервер запущено на http://localhost:${port}`);
+    console.log(`Server is running on port ${port}`);
 });
