@@ -8,7 +8,7 @@ const port = process.env.PORT || 3000;
 
 // Використання CORS
 app.use(cors({
-  origin: 'http://localhost:4200',
+  origin: 'https://synertech-21d84.web.app/',
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
