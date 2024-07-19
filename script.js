@@ -13,11 +13,9 @@ app.use(cors());
 app.use(bodyParser.json());
 
 // Підключення до MongoDB
-mongoose.connect('mongodb+srv://Alex_Gavrish:IKc0xvjnoOshP9Vp@cluster0.sdvypro.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-}).then(() => console.log('MongoDB connected'))
-  .catch(err => console.log(err));
+mongoose.connect('mongodb+srv://Alex_Gavrish:IKc0xvjnoOshP9Vp@cluster0.sdvypro.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
+    .then(() => console.log('MongoDB connected'))
+    .catch(err => console.log(err));
 
 // Схема та модель для користувачів
 const userSchema = new mongoose.Schema({
