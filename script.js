@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-require('dotenv').config(); // Додайте цей рядок для використання .env файлу
+require('dotenv').config(); // Підключення dotenv для використання змінних середовища
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -33,7 +33,7 @@ const userSchema = new mongoose.Schema({
 const User = mongoose.model('User', userSchema);
 
 // Маршрут для реєстрації користувачів
-app.post('', async (req, res) => {
+app.post('/', async (req, res) => {
   const { name, email, select, project } = req.body;
 
   const newUser = new User({ name, email, select, project });
