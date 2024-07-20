@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+require('dotenv').config(); // Додайте цей рядок для використання .env файлу
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -16,20 +17,8 @@ app.use(cors({
 // Middleware для парсингу JSON
 app.use(bodyParser.json());
 
-// Middleware для налаштування заголовків CORS
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', 'https://synertech-21d84.web.app');
-  res.header('Access-Control-Allow-Methods', 'GET,HEAD,OPTIONS,POST,PUT');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-  if (req.method === 'OPTIONS') {
-    res.header('Access-Control-Allow-Credentials', 'true');
-    return res.status(200).json({});
-  }
-  next();
-});
-
 // Підключення до MongoDB
-mongoose.connect('mongodb+srv://Alex_Gavrish:IKc0xvjnoOshP9Vp@cluster0.sdvypro.mongodb.net/synertech?retryWrites=true&w=majority')
+mongoose.connect(process.env.MONGODB_URI)
   .then(() => console.log('MongoDB connected'))
   .catch(err => console.error('MongoDB connection error:', err));
 
@@ -44,7 +33,7 @@ const userSchema = new mongoose.Schema({
 const User = mongoose.model('User', userSchema);
 
 // Маршрут для реєстрації користувачів
-app.post('/', async (req, res) => {
+app.post('', async (req, res) => {
   const { name, email, select, project } = req.body;
 
   const newUser = new User({ name, email, select, project });
