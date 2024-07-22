@@ -46,7 +46,7 @@ const transporter = nodemailer.createTransport({
 const sendEmail = (user) => {
   const mailOptions = {
     from: process.env.EMAIL_USER,
-    to: 'sashawwe21@gmail.com',
+    to: 'synertech2023@gmail.com',
     subject: 'New User Registration',
     text: `Name: ${user.name}\nEmail: ${user.email}\nSelect: ${user.select}\nProject: ${user.project}`
   };
