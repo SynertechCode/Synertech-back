@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const nodemailer = require('nodemailer');
 require('dotenv').config(); // Підключення dotenv для використання змінних середовища
 
 const app = express();
@@ -32,6 +33,33 @@ const userSchema = new mongoose.Schema({
 
 const User = mongoose.model('User', userSchema);
 
+// Налаштування Nodemailer
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.EMAIL_USER, // Ваш Gmail аккаунт
+    pass: process.env.EMAIL_PASS  // Ваш пароль від Gmail
+  }
+});
+
+// Функція для відправки електронної пошти
+const sendEmail = (user) => {
+  const mailOptions = {
+    from: process.env.EMAIL_USER,
+    to: 'synertech2023@gmail.com',
+    subject: 'New User Registration',
+    text: `Name: ${user.name}\nEmail: ${user.email}\nSelect: ${user.select}\nProject: ${user.project}`
+  };
+
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.error('Error sending email:', error);
+    } else {
+      console.log('Email sent:', info.response);
+    }
+  });
+};
+
 // Маршрут для реєстрації користувачів
 app.post('/', async (req, res) => {
   const { name, email, select, project } = req.body;
@@ -40,6 +68,7 @@ app.post('/', async (req, res) => {
 
   try {
     await newUser.save();
+    sendEmail(newUser); // Відправка електронного листа після успішного збереження користувача
     res.status(201).json({ message: 'User registered successfully' });
   } catch (err) {
     console.error('Error registering user:', err);
