@@ -45,8 +45,8 @@ const transporter = nodemailer.createTransport({
 // Функція для відправки електронної пошти
 const sendEmail = (user) => {
   const mailOptions = {
-    from: process.env.EMAIL_USER,
-    to: 'synertech2023@gmail.com',
+    from: process.env.EMAIL_USER, // Відправник - ваша електронна адреса
+    to: 'synertech2023@gmail.com', // Отримувач - ваша електронна адреса
     subject: 'New User Registration',
     text: `Name: ${user.name}\nEmail: ${user.email}\nSelect: ${user.select}\nProject: ${user.project}`
   };
@@ -60,7 +60,6 @@ const sendEmail = (user) => {
     }
   });
 };
-
 
 // Маршрут для реєстрації користувачів
 app.post('/', async (req, res) => {
