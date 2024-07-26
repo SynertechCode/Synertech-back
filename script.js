@@ -10,7 +10,6 @@ const port = process.env.PORT || 3000;
 
 // Enable CORS for all routes
 app.use(cors({
-  origin: 'https://synertech-21d84.web.app', // Вказуйте URL вашого фронтенду
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true
 }));
