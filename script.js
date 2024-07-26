@@ -38,7 +38,16 @@ const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
     user: process.env.EMAIL_USER, // Ваш Gmail аккаунт
-    pass: process.env.EMAIL_PASS  // Ваш пароль від Gmail
+    pass: "ynau gatj ogys rpuy"  
+  }
+});
+
+// Перевірка підключення Nodemailer
+transporter.verify((error, success) => {
+  if (error) {
+    console.error('Error with Nodemailer:', error);
+  } else {
+    console.log('Nodemailer is ready to send emails');
   }
 });
 
@@ -53,22 +62,23 @@ const sendEmail = (user) => {
 
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
-      console.error('Error sending email:', error);
+      console.error('Error sending email:', error.message);
     } else {
       console.log('Email sent:', info.response);
-      console.log('Email details:', info);
     }
   });
 };
 
 // Маршрут для реєстрації користувачів
 app.post('/', async (req, res) => {
+  console.log('Received request:', req.body);
   const { name, email, select, project } = req.body;
 
   const newUser = new User({ name, email, select, project });
 
   try {
     await newUser.save();
+    console.log('User saved to database:', newUser);
     sendEmail(newUser); // Відправка електронного листа після успішного збереження користувача
     res.status(201).json({ message: 'User registered successfully' });
   } catch (err) {
