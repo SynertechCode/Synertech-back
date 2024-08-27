@@ -26,7 +26,8 @@ mongoose.connect(process.env.MONGODB_URI)
 const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, required: true },
-  select: { type: String, required: true },
+  phone: { type: String, required: true },  // Додане нове поле "phone"
+  date: { type: String, required: true },   // Додане нове поле "date"
   project: { type: String, required: true }
 });
 
@@ -56,7 +57,12 @@ const sendEmail = (user) => {
     from: process.env.EMAIL_USER, // Відправник - ваша електронна адреса
     to: 'synertech2023@gmail.com', // Отримувач - ваша електронна адреса
     subject: 'New User Registration',
-    text: `Name: ${user.name}\nEmail: ${user.email}\nSelect: ${user.select}\nProject: ${user.project}`
+    text: `New User Registration Details:
+    Name: ${user.name}
+    Email: ${user.email}
+    Phone: ${user.phone}
+    Preferred Call Time: ${user.date}
+    Project Description: ${user.project}`
   };
 
   transporter.sendMail(mailOptions, (error, info) => {
@@ -71,9 +77,9 @@ const sendEmail = (user) => {
 // Маршрут для реєстрації користувачів
 app.post('/', async (req, res) => {
   console.log('Received request:', req.body);
-  const { name, email, select, project } = req.body;
+  const { name, email, phone, date, project } = req.body;
 
-  const newUser = new User({ name, email, select, project });
+  const newUser = new User({ name, email, phone, date, project });
 
   try {
     await newUser.save();
