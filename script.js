@@ -62,7 +62,7 @@ const sendEmail = (user) => {
     Email: ${user.email}
     Phone: ${user.phone}
     Preferred Call Time: ${user.date}
-    Project Description: ${user.project}`
+    Company name: ${user.project}`
   };
 
   transporter.sendMail(mailOptions, (error, info) => {
