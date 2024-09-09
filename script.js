@@ -28,7 +28,8 @@ const userSchema = new mongoose.Schema({
   email: { type: String, required: true },
   phone: { type: String, required: true },  // Додане нове поле "phone"
   date: { type: String, required: true },   // Додане нове поле "date"
-  project: { type: String, required: true }
+  project: { type: String, required: true },
+  specialty: { type: String, required: true } // Додаємо нове поле "specialty"
 });
 
 const User = mongoose.model('User', userSchema);
@@ -58,6 +59,7 @@ const sendEmail = (user) => {
     to: 'synertech2023@gmail.com', // Отримувач - ваша електронна адреса
     subject: 'New User Registration',
     text: `New User Registration Details:
+    Specialty: ${user.specialty}
     Name: ${user.name}
     Email: ${user.email}
     Phone: ${user.phone}
@@ -77,9 +79,9 @@ const sendEmail = (user) => {
 // Маршрут для реєстрації користувачів
 app.post('/', async (req, res) => {
   console.log('Received request:', req.body);
-  const { name, email, phone, date, project } = req.body;
+  const { name, email, phone, date, project, specialty } = req.body;
 
-  const newUser = new User({ name, email, phone, date, project });
+  const newUser = new User({ name, email, phone, date, project, specialty });
 
   try {
     await newUser.save();
