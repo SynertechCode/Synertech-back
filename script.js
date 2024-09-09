@@ -41,7 +41,7 @@ const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
     user: process.env.EMAIL_USER, // Ваш Gmail аккаунт
-    pass: 'ynau gatj ogys rpuy' // Пароль вашого Gmail аккаунту
+    pass: process.env.EMAIL_PASS // Пароль вашого Gmail аккаунту
   }
 });
 
@@ -100,6 +100,7 @@ app.post('/', async (req, res) => {
     res.status(400).json({ error: 'Error registering user' });
   }
 });
+
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
