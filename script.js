@@ -26,9 +26,10 @@ mongoose.connect(process.env.MONGODB_URI)
 const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, required: true },
-  phone: { type: String, required: true },  // Додане нове поле "phone"
-  date: { type: String, required: true },   // Додане нове поле "date"
-  project: { type: String, required: true }
+  phone: { type: String, required: true },
+  date: { type: String, required: true },
+  project: { type: String, required: true },
+  specialty: { type: String, required: true } // Додане поле "specialty"
 });
 
 const User = mongoose.model('User', userSchema);
@@ -38,7 +39,7 @@ const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
     user: process.env.EMAIL_USER, // Ваш Gmail аккаунт
-    pass: "ynau gatj ogys rpuy"  
+    pass: 'ynau gatj ogys rpuy' // Пароль вашого Gmail аккаунту
   }
 });
 
@@ -62,7 +63,8 @@ const sendEmail = (user) => {
     Email: ${user.email}
     Phone: ${user.phone}
     Preferred Call Time: ${user.date}
-    Company name: ${user.project}`
+    Company name: ${user.project}
+    Specialty: ${user.specialty}` // Додана спеціальність
   };
 
   transporter.sendMail(mailOptions, (error, info) => {
@@ -77,9 +79,9 @@ const sendEmail = (user) => {
 // Маршрут для реєстрації користувачів
 app.post('/', async (req, res) => {
   console.log('Received request:', req.body);
-  const { name, email, phone, date, project } = req.body;
+  const { name, email, phone, date, project, specialty } = req.body;
 
-  const newUser = new User({ name, email, phone, date, project });
+  const newUser = new User({ name, email, phone, date, project, specialty });
 
   try {
     await newUser.save();
