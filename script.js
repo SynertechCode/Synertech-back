@@ -24,11 +24,12 @@ mongoose.connect(process.env.MONGODB_URI)
 
 // Схема та модель для користувачів
 const userSchema = new mongoose.Schema({
+  specialty: { type: String, required: true }, // Додаємо нове поле "specialty"
   name: { type: String, required: true },
   email: { type: String, required: true },
   phone: { type: String, required: true },  // Додане нове поле "phone"
   date: { type: String, required: true },   // Додане нове поле "date"
-  project: { type: String, required: true }
+  project: { type: String, required: true },
 });
 
 const User = mongoose.model('User', userSchema);
@@ -58,11 +59,13 @@ const sendEmail = (user) => {
     to: 'synertech2023@gmail.com', // Отримувач - ваша електронна адреса
     subject: 'New User Registration',
     text: `New User Registration Details:
+    Specialty: ${user.specialty}
     Name: ${user.name}
     Email: ${user.email}
     Phone: ${user.phone}
     Preferred Call Time: ${user.date}
-    Company name: ${user.project}`
+    Company name: ${user.project}
+    `
   };
 
   transporter.sendMail(mailOptions, (error, info) => {
@@ -77,9 +80,9 @@ const sendEmail = (user) => {
 // Маршрут для реєстрації користувачів
 app.post('/', async (req, res) => {
   console.log('Received request:', req.body);
-  const { name, email, phone, date, project } = req.body;
+  const { name, email, phone, date, project, specialty } = req.body;
 
-  const newUser = new User({ name, email, phone, date, project });
+  const newUser = new User({ specialty, name, email, phone, date, project });
 
   try {
     await newUser.save();
