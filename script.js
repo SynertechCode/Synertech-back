@@ -31,6 +31,7 @@ const userSchema = new mongoose.Schema({
   phone: { type: String, required: true },
   date: { type: String, required: true },
   project: { type: String, required: true },
+  specialty: { type: String, required: true }
 });
 
 const User = mongoose.model('User', userSchema);
@@ -60,6 +61,7 @@ const sendEmail = (user) => {
     to: 'synertech2023@gmail.com', // Отримувач - ваша електронна адреса
     subject: 'New User Registration',
     text: `New User Registration Details:
+    Specialty: ${user.specialty}
     Name: ${user.name}
     Email: ${user.email}
     Phone: ${user.phone}
