@@ -88,7 +88,7 @@ app.post('/', async (req, res) => {
     return res.status(400).json({ error: 'All fields are required' });
   }
 
-  const newUser = new User({ name, email, phone, date, project });
+  const newUser = new User({ name, email, phone, date, project, specialty });
 
   try {
     await newUser.save();
