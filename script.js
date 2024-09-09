@@ -84,7 +84,7 @@ app.post('/', async (req, res) => {
   const { name, email, phone, date, project, specialty } = req.body;
 
   // Перевірка, чи всі поля присутні
-  if (!name || !email || !phone || !date || !project || !specialty) {
+  if (!name || !email || !phone || !date || !project) {
     return res.status(400).json({ error: 'All fields are required' });
   }
 
