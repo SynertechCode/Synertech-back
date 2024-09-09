@@ -1,3 +1,4 @@
+// server.js
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
@@ -10,6 +11,7 @@ const port = process.env.PORT || 3000;
 
 // Enable CORS for all routes
 app.use(cors({
+  origin: '*', // Якщо запити йдуть з іншого домену
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true
 }));
@@ -64,7 +66,7 @@ const sendEmail = (user) => {
     Phone: ${user.phone}
     Preferred Call Time: ${user.date}
     Company name: ${user.project}
-    Specialty: ${user.specialty}` // Додана спеціальність
+    Specialty: ${user.specialty}`
   };
 
   transporter.sendMail(mailOptions, (error, info) => {
@@ -80,6 +82,11 @@ const sendEmail = (user) => {
 app.post('/', async (req, res) => {
   console.log('Received request:', req.body);
   const { name, email, phone, date, project, specialty } = req.body;
+
+  // Перевірка, чи всі поля присутні
+  if (!name || !email || !phone || !date || !project || !specialty) {
+    return res.status(400).json({ error: 'All fields are required' });
+  }
 
   const newUser = new User({ name, email, phone, date, project, specialty });
 
