@@ -31,7 +31,6 @@ const userSchema = new mongoose.Schema({
   phone: { type: String, required: true },
   date: { type: String, required: true },
   project: { type: String, required: true },
-  specialty: { type: String, required: true } // Додане поле "specialty"
 });
 
 const User = mongoose.model('User', userSchema);
@@ -66,8 +65,7 @@ const sendEmail = (user) => {
     Phone: ${user.phone}
     Preferred Call Time: ${user.date}
     Company name: ${user.project}
-    Specialty: ${user.specialty}`
-  };
+  `};
 
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
@@ -88,7 +86,7 @@ app.post('/', async (req, res) => {
     return res.status(400).json({ error: 'All fields are required' });
   }
 
-  const newUser = new User({ name, email, phone, date, project, specialty });
+  const newUser = new User({ name, email, phone, date, project });
 
   try {
     await newUser.save();
