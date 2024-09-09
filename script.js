@@ -31,7 +31,6 @@ const userSchema = new mongoose.Schema({
   phone: { type: String, required: true },
   date: { type: String, required: true },
   project: { type: String, required: true },
-  specialty: { type: String, required: true }
 });
 
 const User = mongoose.model('User', userSchema);
@@ -61,7 +60,6 @@ const sendEmail = (user) => {
     to: 'synertech2023@gmail.com', // Отримувач - ваша електронна адреса
     subject: 'New User Registration',
     text: `New User Registration Details:
-    Specialty: ${user.specialty}
     Name: ${user.name}
     Email: ${user.email}
     Phone: ${user.phone}
@@ -81,14 +79,14 @@ const sendEmail = (user) => {
 // Маршрут для реєстрації користувачів
 app.post('/', async (req, res) => {
   console.log('Received request:', req.body);
-  const { name, email, phone, date, project, specialty } = req.body;
+  const { name, email, phone, date, project } = req.body;
 
   // Перевірка, чи всі поля присутні
   if (!name || !email || !phone || !date || !project) {
     return res.status(400).json({ error: 'All fields are required' });
   }
 
-  const newUser = new User({ name, email, phone, date, project, specialty });
+  const newUser = new User({ name, email, phone, date, project });
 
   try {
     await newUser.save();
